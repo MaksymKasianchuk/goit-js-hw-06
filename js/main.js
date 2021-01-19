@@ -4,11 +4,7 @@ import users from "./users.js";
 // Получить массив имен всех пользователей (поле name).
 console.log("Task-1---------------------------------");
 const getUserNames = users => {
-    let names = [];
-    users.forEach(item => {
-        names.push(item.name);
-    });
-    return names;
+    return users.map(item => item.name);
 };
 console.log(getUserNames(users));
 // [ 'Moore Hensley', 'Sharlene Bush', 'Ross Vazquez', 'Elma Head', 'Carey Barr', 'Blackburn Dotson', 'Sheree Anthony' ]
@@ -17,11 +13,7 @@ console.log(getUserNames(users));
 //Получить массив объектов пользователей по цвету глаз (поле eyeColor).
 console.log("Task-2---------------------------------");
 const getUsersWithEyeColor = (users, color) => {
-    let usersOneEyesColor = [];
-    users.filter(user => { 
-        if (user.eyeColor === color) usersOneEyesColor.push(user); 
-    });
-    return usersOneEyesColor;
+    return users.filter(user => user.eyeColor === color);
 };
 console.log(getUsersWithEyeColor(users, 'blue')); // [объект Moore Hensley, объект Sharlene Bush, объект Carey Barr]
 
@@ -29,11 +21,9 @@ console.log(getUsersWithEyeColor(users, 'blue')); // [объект Moore Hensley
 // Получить массив имен пользователей по полу (поле gender).
 console.log("Task-3---------------------------------");
 const getUsersWithGender = (users, gender) => {
-    let usersOneGender = [];
-    users.filter(user => { 
-        if (user.gender === gender) usersOneGender.push(user); 
-    });
-    return usersOneGender;
+    return users
+        .filter((user) => user.gender === gender)
+        .map((user) => user.name);
 };
 console.log(getUsersWithGender(users, 'male')); // [ 'Moore Hensley', 'Ross Vazquez', 'Carey Barr', 'Blackburn Dotson' ]
 
@@ -41,11 +31,7 @@ console.log(getUsersWithGender(users, 'male')); // [ 'Moore Hensley', 'Ross Vazq
 //Получить массив только неактивных пользователей (поле isActive).
 console.log("Task-4---------------------------------");
 const getInactiveUsers = users => {
-    let unactiveUsers = [];
-    users.filter(user => { 
-        if (!user.isActive) unactiveUsers.push(user); 
-    });
-    return unactiveUsers;
+   return users.filter(user => !user.isActive);
 };
 console.log(getInactiveUsers(users)); // [объект Moore Hensley, объект Ross Vazquez, объект Blackburn Dotson]
 
@@ -53,7 +39,7 @@ console.log(getInactiveUsers(users)); // [объект Moore Hensley, объек
 // Получить пользоваля (не массив) по email (поле email, он уникальный).
 console.log("Task-5---------------------------------");
 const getUserWithEmail = (users, email) => {
-   return users.find(user => user.email === email);
+    return users.find(user => user.email === email);
 };
 console.log(getUserWithEmail(users, 'shereeanthony@kog.com')); // {объект пользователя Sheree Anthony}
 console.log(getUserWithEmail(users, 'elmahead@omatom.com')); // {объект пользователя Elma Head}
@@ -62,11 +48,7 @@ console.log(getUserWithEmail(users, 'elmahead@omatom.com')); // {объект п
 // Получить массив пользователей попадающих в возрастную категорию от min до max лет (поле age).
 console.log("Task-6---------------------------------");
 const getUsersWithAge = (users, min, max) => {
-   let usersWithAge = [];
-    users.filter(user => { 
-        if (user.age > min && user.age < max) usersWithAge.push(user); 
-    });
-    return usersWithAge;
+    return users.filter(user => user.age > min && user.age < max); 
 };
 console.log(getUsersWithAge(users, 20, 30)); // [объект Ross Vazquez, объект Elma Head, объект Carey Barr]
 console.log(getUsersWithAge(users, 30, 40));
@@ -82,9 +64,9 @@ console.log(calculateTotalBalance(users)); // 20916
 //Массив имен всех пользователей у которых есть друг с указанным именем.
 console.log("Task-8---------------------------------");
 const getUsersWithFriend = (users, friendName) => {
-    let names = [];
-    users.filter(user => { if (user.friends.some(friend => friend === friendName)) names.push(user.name);});
-    return names;
+    return users
+        .filter(user => user.friends.some(friend => friend === friendName))
+        .map(user => user.name);
 };
 console.log(getUsersWithFriend(users, 'Briana Decker')); // [ 'Sharlene Bush', 'Sheree Anthony' ]
 console.log(getUsersWithFriend(users, 'Goldie Gentry')); // [ 'Elma Head', 'Sheree Anthony' ]
@@ -93,10 +75,9 @@ console.log(getUsersWithFriend(users, 'Goldie Gentry')); // [ 'Elma Head', 'Sher
 // Массив имен (поле name) людей, отсортированных в зависимости от количества их друзей (поле friends)
 console.log("Task-9---------------------------------");
 const getNamesSortedByFriendsCount = users => {
-    let sortedUsers = []
-    users.sort((prevUser, nextUser) => prevUser.friends.length - nextUser.friends.length)
-    .forEach(user => sortedUsers.push(user.name));
-    return sortedUsers;
+    return users
+        .sort((prevUser, nextUser) => prevUser.friends.length - nextUser.friends.length)
+        .map(user => user.name);
 };
 console.log(getNamesSortedByFriendsCount(users));
 // [ 'Moore Hensley', 'Sharlene Bush', 'Elma Head', 'Carey Barr', 'Blackburn Dotson', 'Sheree Anthony', 'Ross Vazquez' ]
@@ -107,11 +88,10 @@ console.log(getNamesSortedByFriendsCount(users));
 // и они должны быть отсортированы в алфавитном порядке.
 console.log("Task-10---------------------------------");
 const getSortedUniqueSkills = users => {
-    const sortedUniqueSkills =
-        users.flatMap(user => user.skills)
+    return users
+        .flatMap(user => user.skills)
         .filter((item, index, arr) => { return arr.indexOf(item) === index; })
         .sort();
-    return sortedUniqueSkills;
 };
 console.log(getSortedUniqueSkills(users));
 // [ 'adipisicing', 'amet', 'anim', 'commodo', 'culpa', 'elit', 'ex', 'ipsum',
